@@ -138,35 +138,64 @@ def card(text: str, tone: str = "") -> str:
 
 
 CSS = """
+@keyframes fadeUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+#hero, .tabitem { animation: fadeUp 0.35s ease-out; }
+
+#hero { padding:20px 4px 8px; }
+#hero h1 { margin:0; font-size:2rem; letter-spacing:-0.01em; }
+#hero p { opacity:0.75; max-width:62ch; margin:8px 0 18px; line-height:1.55; }
+
+.steps { display:flex; flex-wrap:wrap; gap:10px; }
+.step { display:flex; align-items:center; gap:8px; padding:8px 14px;
+  border-radius:999px; background:rgba(124,58,237,.08);
+  border:1px solid rgba(124,58,237,.25); font-size:0.85rem; }
+.step .num { display:inline-flex; align-items:center; justify-content:center;
+  width:20px; height:20px; border-radius:50%; background:#7c3aed; color:#fff;
+  font-size:0.72rem; font-weight:700; flex:none; }
+
 .pill { font-weight:600; padding:3px 12px; border-radius:4px;
   margin-right:10px; font-size:0.85rem; }
 .pill.pass { background:rgba(34,197,94,.12); color:#22c55e; border:1px solid #22c55e; }
 .pill.fail { background:rgba(239,68,68,.12); color:#ef4444; border:1px solid #ef4444; }
 .verdict { padding:14px 4px 8px; font-weight:500; }
-.simlog { background:rgba(127,127,127,.08); border-radius:6px; padding:14px;
+.simlog { background:rgba(127,127,127,.08); border-radius:8px; padding:14px;
   max-height:260px; overflow:auto; white-space:pre-wrap; font-family:monospace; }
 .badge { font-size:0.75rem; padding:4px 10px; border-radius:4px; }
 .badge.gold { color:#b8860b; border:1px solid #b8860b; }
 .badge.violet { color:#7c3aed; border:1px solid #7c3aed; }
-.card { border:1px dashed rgba(127,127,127,.4); border-radius:6px; padding:18px; }
-.card.dim { opacity:0.7; }
+.card { border:1px solid rgba(124,58,237,.2); background:rgba(124,58,237,.05);
+  border-radius:10px; padding:16px 18px; transition:border-color .15s ease; }
+.card.dim { opacity:0.85; }
 table.abl { width:100%; border-collapse:collapse; font-size:0.9rem; }
 table.abl th { text-align:left; font-weight:600; padding:10px 12px;
   border-bottom:1px solid rgba(127,127,127,.3); }
+table.abl tr { transition:background-color .12s ease; }
+table.abl tbody tr:hover { background:rgba(124,58,237,.06); }
 table.abl td { padding:10px 12px; border-bottom:1px solid rgba(127,127,127,.2); }
-td.barcell { width:38%; } .bar { height:10px; border-radius:2px; background:#7c3aed; }
-.ragans { padding:14px; border:1px solid rgba(127,127,127,.3); border-radius:6px;
+td.barcell { width:38%; }
+.bar { height:10px; border-radius:2px; background:linear-gradient(90deg,#7c3aed,#a78bfa);
+  transition:width .4s ease; }
+.ragans { padding:14px; border:1px solid rgba(127,127,127,.3); border-radius:8px;
   line-height:1.6; white-space:pre-wrap; }
 .cite { font-size:0.8rem; opacity:0.75; margin-top:8px; }
+
+button.primary, .gr-button-primary { transition:transform .12s ease, box-shadow .12s ease !important; }
+button.primary:hover, .gr-button-primary:hover {
+  transform:translateY(-1px); box-shadow:0 4px 14px rgba(124,58,237,.3); }
 """
 
 HERO = """
-<div style="padding:16px 4px">
-  <h1 style="margin:0">SiliconLM</h1>
-  <p style="opacity:0.75;max-width:60ch">Chip-design language model:
-  from-scratch pretraining, domain adaptation, SFT, and DPO where the
-  preference signal comes from running candidate Verilog through
-  Icarus Verilog instead of a human or an LLM judge.</p>
+<div id="hero">
+  <h1>SiliconLM</h1>
+  <p>Chip-design language model: from-scratch pretraining, domain adaptation,
+  SFT, and DPO where the preference signal comes from running candidate
+  Verilog through Icarus Verilog instead of a human or an LLM judge.</p>
+  <div class="steps">
+    <div class="step"><span class="num">1</span>Generate a spec into Verilog</div>
+    <div class="step"><span class="num">2</span>Verify it compiles &amp; simulates</div>
+    <div class="step"><span class="num">3</span>Compare checkpoints in Ablation</div>
+    <div class="step"><span class="num">4</span>Ask docs, grounded &amp; cited</div>
+  </div>
 </div>
 """
 
@@ -246,5 +275,6 @@ with gr.Blocks(title="SiliconLM") as demo:
         rag_btn.click(ask_docs, q_in, rag_out)
 
 if __name__ == "__main__":
-    demo.launch(css=CSS, server_name="0.0.0.0",
+    demo.launch(css=CSS, theme=gr.themes.Soft(primary_hue="violet"),
+                server_name="0.0.0.0",
                 server_port=int(os.environ.get("PORT", 7860)))
