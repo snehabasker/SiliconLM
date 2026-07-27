@@ -174,37 +174,73 @@ with gr.Blocks(title="SiliconLM") as demo:
     gr.HTML(HERO)
 
     with gr.Tab("Generate"):
+        gr.HTML("<div class='card dim'>No trained checkpoint is loaded yet, so "
+                "this runs in demo mode: it matches your spec against 5 known "
+                "problems and returns their verified reference solution. Try "
+                "one of the examples below, or type your own spec once a "
+                "model is available.</div>")
         prompt = gr.Textbox(label="Design spec", lines=4,
                             placeholder="Implement a 3-bit up-counter with "
                                         "synchronous reset and enable…")
+        gr.Examples(
+            examples=[
+                ["Implement a 4-bit unsigned adder with carry out."],
+                ["Implement a 2-to-1 multiplexer for 8-bit data."],
+                ["Implement a D flip-flop with active-high asynchronous reset."],
+                ["Implement a 3-bit up-counter with synchronous reset and enable."],
+                ["Implement a 4-to-2 priority encoder with valid flag."],
+            ],
+            inputs=[prompt], label="Try one:",
+        )
         gen_btn = gr.Button("Generate Verilog", variant="primary")
         gen_status = gr.HTML()
         gen_out = gr.Code(label="SiliconLM output", language=None)
         gen_btn.click(generate, prompt, [gen_out, gen_status])
 
     with gr.Tab("Verify"):
-        gr.HTML("<div class='card dim'>Compiles and simulates your module + "
-                "testbench with Icarus Verilog.</div>")
+        gr.HTML("<div class='card dim'>Compiles and simulates a Verilog module "
+                "against a testbench with Icarus Verilog — real simulation, not "
+                "an LLM guessing whether the code is correct. New here? Click "
+                "\"Load example\" to fill both boxes with a working pair, then "
+                "hit \"Compile & simulate\".</div>")
         with gr.Row():
             code_in = gr.Code(label="Verilog module", language=None, lines=12)
             tb_in = gr.Code(label="Testbench (must print ALL_TESTS_PASSED)",
                             language=None, lines=12)
         with gr.Row():
-            ex_btn = gr.Button("Load example")
+            ex_btn = gr.Button("Load example", variant="primary")
             ver_btn = gr.Button("Compile & simulate", variant="primary")
         verdict = gr.HTML()
         ex_btn.click(load_example, None, [code_in, tb_in])
         ver_btn.click(verify, [code_in, tb_in], verdict)
 
     with gr.Tab("Ablation"):
-        gr.HTML("<div class='card dim'>pass@k per training stage, from "
-                "silicon_eval results.</div>")
+        gr.HTML("<div class='card dim'>Nothing to type here — this table shows "
+                "pass@1 / pass@5 for every model checkpoint that's been scored "
+                "so far (silicon_eval/run_eval.py writes one JSON file per "
+                "checkpoint into results/, and every row below is one of "
+                "those files). Click Refresh after scoring a new checkpoint.</div>")
         abl = gr.HTML(ablation_html())
         gr.Button("Refresh").click(lambda: ablation_html(), None, abl)
 
     with gr.Tab("Ask docs"):
+        gr.HTML("<div class='card dim'>Retrieval-augmented Q&amp;A over a small "
+                "indexed set of sample documents (a fictional datasheet + a "
+                "RISC-V basics doc). It refuses to answer anything not covered "
+                "by the index instead of guessing — try an off-topic question "
+                "to see that guardrail.</div>")
         q_in = gr.Textbox(label="Question about the indexed documentation",
                           placeholder="What is the absolute maximum VDD?")
+        gr.Examples(
+            examples=[
+                ["What is the absolute maximum VDD?"],
+                ["What is the recommended operating voltage?"],
+                ["What privilege levels does RISC-V define?"],
+                ["What are the standard RISC-V extensions?"],
+                ["What is the capital of France?"],
+            ],
+            inputs=[q_in], label="Try one (the last one should be refused):",
+        )
         rag_btn = gr.Button("Search", variant="primary")
         rag_out = gr.HTML()
         rag_btn.click(ask_docs, q_in, rag_out)
