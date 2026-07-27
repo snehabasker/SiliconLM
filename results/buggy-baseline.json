@@ -1,0 +1,51 @@
+{
+  "model_name": "buggy-baseline",
+  "n_problems": 5,
+  "n_samples": 2,
+  "compile_rate": 1.0,
+  "pass_at": {
+    "pass@1": 0.0
+  },
+  "per_problem": {
+    "adder4": {
+      "n": 2,
+      "compiled": 2,
+      "correct": 0,
+      "pass_at": {
+        "pass@1": 0.0
+      }
+    },
+    "counter3": {
+      "n": 2,
+      "compiled": 2,
+      "correct": 0,
+      "pass_at": {
+        "pass@1": 0.0
+      }
+    },
+    "dff_arst": {
+      "n": 2,
+      "compiled": 2,
+      "correct": 0,
+      "pass_at": {
+        "pass@1": 0.0
+      }
+    },
+    "mux2": {
+      "n": 2,
+      "compiled": 2,
+      "correct": 0,
+      "pass_at": {
+        "pass@1": 0.0
+      }
+    },
+    "prienc4": {
+      "n": 2,
+      "compiled": 2,
+      "correct": 0,
+      "pass_at": {
+        "pass@1": 0.0
+      }
+    }
+  }
+}

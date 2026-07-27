@@ -1,0 +1,51 @@
+{
+  "model_name": "base",
+  "n_problems": 5,
+  "n_samples": 2,
+  "compile_rate": 0.8,
+  "pass_at": {
+    "pass@1": 0.5
+  },
+  "per_problem": {
+    "adder4": {
+      "n": 2,
+      "compiled": 2,
+      "correct": 0,
+      "pass_at": {
+        "pass@1": 0.0
+      }
+    },
+    "counter3": {
+      "n": 2,
+      "compiled": 2,
+      "correct": 2,
+      "pass_at": {
+        "pass@1": 1.0
+      }
+    },
+    "dff_arst": {
+      "n": 2,
+      "compiled": 2,
+      "correct": 2,
+      "pass_at": {
+        "pass@1": 1.0
+      }
+    },
+    "mux2": {
+      "n": 2,
+      "compiled": 1,
+      "correct": 1,
+      "pass_at": {
+        "pass@1": 0.5
+      }
+    },
+    "prienc4": {
+      "n": 2,
+      "compiled": 1,
+      "correct": 0,
+      "pass_at": {
+        "pass@1": 0.0
+      }
+    }
+  }
+}

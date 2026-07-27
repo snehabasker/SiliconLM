@@ -1,0 +1,7 @@
+{
+  "pid": "dff_arst",
+  "prompt": "Implement a D flip-flop with active-high asynchronous reset.\nModule header:\nmodule dff_arst(input clk, input rst, input d, output reg q);\nOn rst q becomes 0 immediately; otherwise q captures d on the rising clock edge. Reply with complete Verilog.",
+  "module_header": "module dff_arst(input clk, input rst, input d, output reg q);",
+  "reference": "module dff_arst(input clk, input rst, input d, output reg q);\n  always @(posedge clk or posedge rst)\n    if (rst) q <= 1'b0; else q <= d;\nendmodule",
+  "testbench": "\nmodule tb;\n  reg clk, rst, d; wire q; integer errors;\n  dff_arst dut(.clk(clk), .rst(rst), .d(d), .q(q));\n  always #5 clk = ~clk;\n  initial begin\n    errors = 0; clk = 0; rst = 1; d = 1; #12;\n    if (q !== 1'b0) errors = errors + 1;      // held in reset\n    rst = 0; d = 1; @(posedge clk); #1;\n    if (q !== 1'b1) errors = errors + 1;      // captured d=1\n    d = 0; @(posedge clk); #1;\n    if (q !== 1'b0) errors = errors + 1;      // captured d=0\n    d = 1; #2; rst = 1; #1;\n    if (q !== 1'b0) errors = errors + 1;      // async reset mid-cycle\n    if (errors == 0) $display(\"ALL_TESTS_PASSED\");\n    $finish;\n  end\nendmodule\n"
+}

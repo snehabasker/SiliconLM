@@ -1,0 +1,7 @@
+{
+  "pid": "mux2",
+  "prompt": "Implement a 2-to-1 multiplexer for 8-bit data.\nModule header:\nmodule mux2(input [7:0] d0, input [7:0] d1, input sel, output [7:0] y);\ny = d1 when sel is 1, else d0. Reply with complete Verilog.",
+  "module_header": "module mux2(input [7:0] d0, input [7:0] d1, input sel, output [7:0] y);",
+  "reference": "module mux2(input [7:0] d0, input [7:0] d1, input sel, output [7:0] y);\n  assign y = sel ? d1 : d0;\nendmodule",
+  "testbench": "\nmodule tb;\n  reg [7:0] d0, d1; reg sel; wire [7:0] y; integer i, errors;\n  mux2 dut(.d0(d0), .d1(d1), .sel(sel), .y(y));\n  initial begin\n    errors = 0;\n    for (i = 0; i < 64; i = i + 1) begin\n      d0 = $random; d1 = $random; sel = i[0]; #1;\n      if (y !== (sel ? d1 : d0)) errors = errors + 1;\n    end\n    if (errors == 0) $display(\"ALL_TESTS_PASSED\");\n    $finish;\n  end\nendmodule\n"
+}

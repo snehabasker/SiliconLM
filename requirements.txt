@@ -1,0 +1,12 @@
+# training + data (Kaggle/Colab GPU environments)
+torch>=2.2
+transformers>=4.44
+datasets>=2.20
+peft>=0.11
+trl>=0.9
+bitsandbytes>=0.43
+accelerate>=0.30
+# rag
+faiss-cpu>=1.8
+sentence-transformers>=3.0
+numpy

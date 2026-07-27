@@ -1,0 +1,5 @@
+gradio>=6.0
+llama-cpp-python>=0.2.90
+faiss-cpu>=1.8
+sentence-transformers>=3.0
+numpy

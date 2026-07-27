@@ -1,0 +1,7 @@
+{
+  "pid": "adder4",
+  "prompt": "Implement a 4-bit unsigned adder with carry out.\nModule header:\nmodule adder4(input [3:0] a, input [3:0] b, output [4:0] sum);\nsum must equal a + b (5-bit result). Combinational logic only. Reply with complete Verilog.",
+  "module_header": "module adder4(input [3:0] a, input [3:0] b, output [4:0] sum);",
+  "reference": "module adder4(input [3:0] a, input [3:0] b, output [4:0] sum);\n  assign sum = a + b;\nendmodule",
+  "testbench": "\nmodule tb;\n  reg [3:0] a, b; wire [4:0] sum; integer i, j, errors;\n  adder4 dut(.a(a), .b(b), .sum(sum));\n  initial begin\n    errors = 0;\n    for (i = 0; i < 16; i = i + 1)\n      for (j = 0; j < 16; j = j + 1) begin\n        a = i[3:0]; b = j[3:0]; #1;\n        if (sum !== (i + j)) begin\n          errors = errors + 1;\n          $display(\"FAIL a=%0d b=%0d sum=%0d\", i, j, sum);\n        end\n      end\n    if (errors == 0) $display(\"ALL_TESTS_PASSED\");\n    $finish;\n  end\nendmodule\n"
+}

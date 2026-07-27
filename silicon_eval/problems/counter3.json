@@ -1,0 +1,7 @@
+{
+  "pid": "counter3",
+  "prompt": "Implement a 3-bit up-counter with synchronous active-high reset and enable.\nModule header:\nmodule counter3(input clk, input rst, input en, output reg [2:0] count);\nOn the rising edge: reset to 0 if rst, else increment when en. Wraps 7 to 0. Reply with complete Verilog.",
+  "module_header": "module counter3(input clk, input rst, input en, output reg [2:0] count);",
+  "reference": "module counter3(input clk, input rst, input en, output reg [2:0] count);\n  always @(posedge clk)\n    if (rst) count <= 3'd0;\n    else if (en) count <= count + 3'd1;\nendmodule",
+  "testbench": "\nmodule tb;\n  reg clk, rst, en; wire [2:0] count; integer i, errors; reg [2:0] model;\n  counter3 dut(.clk(clk), .rst(rst), .en(en), .count(count));\n  always #5 clk = ~clk;\n  initial begin\n    errors = 0; clk = 0; rst = 1; en = 0; model = 0;\n    @(posedge clk); #1; rst = 0; en = 1;\n    for (i = 0; i < 20; i = i + 1) begin\n      @(posedge clk); model = model + 1; #1;\n      if (count !== model) errors = errors + 1;\n    end\n    en = 0; @(posedge clk); #1;\n    if (count !== model) errors = errors + 1;   // hold when disabled\n    if (errors == 0) $display(\"ALL_TESTS_PASSED\");\n    $finish;\n  end\nendmodule\n"
+}
