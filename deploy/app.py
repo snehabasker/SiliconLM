@@ -49,7 +49,8 @@ def demo_bank() -> dict[str, tuple[str, str]]:
 DEMOS = demo_bank()
 
 
-def generate(prompt: str) -> tuple[str, str]:
+def generate(prompt: str | None) -> tuple[str, str]:
+    prompt = prompt or ""
     llm = get_llm()
     if llm is not None:
         out = llm.create_chat_completion(
@@ -66,8 +67,8 @@ def generate(prompt: str) -> tuple[str, str]:
                            "to serve the trained model)", "violet")
 
 
-def verify(code: str, testbench: str) -> str:
-    if not code.strip() or not testbench.strip():
+def verify(code: str | None, testbench: str | None) -> str:
+    if not (code or "").strip() or not (testbench or "").strip():
         return card("Paste a module and a testbench, or load the example.", "dim")
     res = check_candidate(extract_verilog(code), testbench)
     log = html.escape(res.log[-1500:])
@@ -114,8 +115,8 @@ def ablation_html() -> str:
         f"</tr></thead><tbody>{body}</tbody></table>")
 
 
-def ask_docs(q: str) -> str:
-    if not q.strip():
+def ask_docs(q: str | None) -> str:
+    if not (q or "").strip():
         return card("Ask something about the indexed documentation.", "dim")
     if not (RAG_INDEX / "faiss.idx").exists():
         return card("No index yet — build one with rag/datasheet_rag.py build "
