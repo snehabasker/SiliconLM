@@ -1,0 +1,192 @@
+{
+  "target": "Qwen/Qwen2.5-Coder-1.5B",
+  "draft": "Qwen/Qwen2.5-Coder-0.5B",
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 5050 Laptop GPU",
+  "max_new_tokens": 300,
+  "greedy": {
+    "K=3": {
+      "baseline_tok_s": 6.69,
+      "speculative_tok_s": 6.33,
+      "speedup": 0.947,
+      "acceptance_rate": 0.85,
+      "mean_accepted_per_round": 2.434,
+      "tokens_per_target_pass": 3.357,
+      "verify_rounds": 364,
+      "draft_tokens_proposed": 1042,
+      "greedy_identical": "10/10"
+    },
+    "K=5": {
+      "baseline_tok_s": 6.75,
+      "speculative_tok_s": 6.25,
+      "speedup": 0.926,
+      "acceptance_rate": 0.799,
+      "mean_accepted_per_round": 3.699,
+      "tokens_per_target_pass": 4.594,
+      "verify_rounds": 266,
+      "draft_tokens_proposed": 1232,
+      "greedy_identical": "10/10"
+    },
+    "K=8": {
+      "baseline_tok_s": 6.77,
+      "speculative_tok_s": 5.72,
+      "speedup": 0.845,
+      "acceptance_rate": 0.725,
+      "mean_accepted_per_round": 4.981,
+      "tokens_per_target_pass": 5.819,
+      "verify_rounds": 210,
+      "draft_tokens_proposed": 1442,
+      "greedy_identical": "10/10"
+    }
+  },
+  "pass_at_k": {
+    "samples_per_problem": 10,
+    "n_problems": 5,
+    "baseline": {
+      "model_name": "baseline",
+      "n_problems": 5,
+      "n_samples": 10,
+      "compile_rate": 0.6,
+      "pass_at": {
+        "pass@1": 0.4,
+        "pass@5": 0.5992,
+        "pass@10": 0.6
+      },
+      "per_problem": {
+        "adder4": {
+          "n": 10,
+          "compiled": 2,
+          "correct": 0,
+          "pass_at": {
+            "pass@1": 0.0,
+            "pass@5": 0.0,
+            "pass@10": 0.0
+          }
+        },
+        "counter3": {
+          "n": 10,
+          "compiled": 8,
+          "correct": 7,
+          "pass_at": {
+            "pass@1": 0.7,
+            "pass@5": 1.0,
+            "pass@10": 1.0
+          }
+        },
+        "dff_arst": {
+          "n": 10,
+          "compiled": 9,
+          "correct": 8,
+          "pass_at": {
+            "pass@1": 0.8,
+            "pass@5": 1.0,
+            "pass@10": 1.0
+          }
+        },
+        "mux2": {
+          "n": 10,
+          "compiled": 5,
+          "correct": 5,
+          "pass_at": {
+            "pass@1": 0.5,
+            "pass@5": 0.996,
+            "pass@10": 1.0
+          }
+        },
+        "prienc4": {
+          "n": 10,
+          "compiled": 6,
+          "correct": 0,
+          "pass_at": {
+            "pass@1": 0.0,
+            "pass@5": 0.0,
+            "pass@10": 0.0
+          }
+        }
+      }
+    },
+    "speculative": {
+      "model_name": "speculative",
+      "n_problems": 5,
+      "n_samples": 10,
+      "compile_rate": 0.7,
+      "pass_at": {
+        "pass@1": 0.44,
+        "pass@5": 0.7952,
+        "pass@10": 1.0
+      },
+      "per_problem": {
+        "adder4": {
+          "n": 10,
+          "compiled": 4,
+          "correct": 1,
+          "pass_at": {
+            "pass@1": 0.1,
+            "pass@5": 0.5,
+            "pass@10": 1.0
+          }
+        },
+        "counter3": {
+          "n": 10,
+          "compiled": 10,
+          "correct": 4,
+          "pass_at": {
+            "pass@1": 0.4,
+            "pass@5": 0.9762,
+            "pass@10": 1.0
+          }
+        },
+        "dff_arst": {
+          "n": 10,
+          "compiled": 9,
+          "correct": 8,
+          "pass_at": {
+            "pass@1": 0.8,
+            "pass@5": 1.0,
+            "pass@10": 1.0
+          }
+        },
+        "mux2": {
+          "n": 10,
+          "compiled": 8,
+          "correct": 8,
+          "pass_at": {
+            "pass@1": 0.8,
+            "pass@5": 1.0,
+            "pass@10": 1.0
+          }
+        },
+        "prienc4": {
+          "n": 10,
+          "compiled": 4,
+          "correct": 1,
+          "pass_at": {
+            "pass@1": 0.1,
+            "pass@5": 0.5,
+            "pass@10": 1.0
+          }
+        }
+      }
+    },
+    "sample_pass_rate": {
+      "baseline": {
+        "correct": 20,
+        "n": 50,
+        "wilson95": [
+          0.276,
+          0.538
+        ]
+      },
+      "speculative": {
+        "correct": 22,
+        "n": 50,
+        "wilson95": [
+          0.312,
+          0.577
+        ]
+      },
+      "two_proportion_p": 0.6853
+    }
+  },
+  "notes": "greedy block from corrected rerun (trimmed at first endmodule); timings taken on battery power, CPU launch-bound"
+}

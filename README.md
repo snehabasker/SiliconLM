@@ -56,6 +56,25 @@ python silicon_eval/run_eval.py --hf you/siliconlm-dpo       --name dpo
 python deploy/app.py
 ```
 
+## Speculative decoding
+
+`silicon_eval/specdec_bench.py` measures HF assisted generation with Qwen2.5-Coder-0.5B as the draft and the 1.5B as the target: acceptance rate, tokens/s, speed-up, greedy exactness, and simulator-verified pass@k with and without the draft.
+
+```bash
+python silicon_eval/specdec_bench.py --target Qwen/Qwen2.5-Coder-1.5B \
+    --draft Qwen/Qwen2.5-Coder-0.5B --samples 50     # writes results/specdec/specdec.json
+```
+
+First measurements (RTX 5050 laptop on battery, fp16, base 1.5B as target, 5 problems):
+
+| K | acceptance | tokens / target pass | speed-up | greedy output identical |
+|---|---|---|---|---|
+| 3 | 85% | 3.36 | 0.95x | 10/10 |
+| 5 | 80% | 4.59 | 0.93x | 10/10 |
+| 8 | 73% | 5.82 | 0.85x | 10/10 |
+
+Acceptance and exactness are hardware-independent. The speed-up is not: on that machine every kernel launch was CPU-bound, so a draft pass cost nearly as much as a target pass. Re-measure on a T4 (see `kaggle/README.md`) before quoting a speed number. Sampled pass@1 was 0.40 baseline vs 0.44 speculative (20/50 vs 22/50 correct, p=0.69); with 5 problems that is too few samples to call "unchanged" on its own, so the greedy identity check is the stronger evidence.
+
 ## Cost
 
 Everything here runs on free tiers: Kaggle's T4 quota for the training stages, Mistral/Groq free tiers for drafting SFT prompts, a local Icarus Verilog install (no cost) for every eval number, and an HF CPU Space for hosting. The point of keeping it free isn't frugality for its own sake — it's a check that a small, deeply-adapted model can beat a bigger model you only prompted, without needing a training budget to prove it.

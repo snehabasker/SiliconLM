@@ -7,6 +7,14 @@ Weekly plan (T4 x2 where it helps):
   Week 4 — DPO pair sampling (~4 h GPU) + Stage 4 DPO (~6 h)
   Week 5 — full eval sweep (~4 h) + GGUF quantization (CPU) + Space
 
+Speculative-decoding benchmark (about 1 GPU-h, one T4 session):
+  !apt-get install -y iverilog
+  !python silicon_eval/specdec_bench.py --target you/siliconlm-dpo \
+      --draft Qwen/Qwen2.5-Coder-0.5B --speed_reps 3 --samples 50
+  Then commit results/specdec/specdec.json. If acceptance on the tuned
+  target is much lower than on the base 1.5B, the 0.5B draft is the thing
+  to fine-tune on the same Verilog data.
+
 Session rules that make this painless:
   1. Add HF_TOKEN as a Kaggle secret; every script pushes checkpoints
      to the Hub (hub_strategy="checkpoint") so a dead session costs at
