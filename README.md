@@ -75,6 +75,15 @@ First measurements (RTX 5050 laptop on battery, fp16, base 1.5B as target, 5 pro
 
 Acceptance and exactness are hardware-independent. The speed-up is not: on that machine every kernel launch was CPU-bound, so a draft pass cost nearly as much as a target pass. Re-measure on a T4 (see `kaggle/README.md`) before quoting a speed number. Sampled pass@1 was 0.40 baseline vs 0.44 speculative (20/50 vs 22/50 correct, p=0.69); with 5 problems that is too few samples to call "unchanged" on its own, so the greedy identity check is the stronger evidence.
 
+## Additional studies (in progress, no results yet)
+
+- [`optim_study/`](optim_study/): AdamW vs SGD+momentum vs Lion vs Adafactor on the from-scratch GPT. Training script and
+  corpus statistics only; no runs yet.
+- [`diffusion_study/`](diffusion_study/): flow matching on CIFAR-10 with samplers, classifier-free guidance and
+  progressive distillation. Code and sampler tests only; nothing trained yet.
+
+Each folder's README lists what is and is not done.
+
 ## Cost
 
 Everything here runs on free tiers: Kaggle's T4 quota for the training stages, Mistral/Groq free tiers for drafting SFT prompts, a local Icarus Verilog install (no cost) for every eval number, and an HF CPU Space for hosting. The point of keeping it free isn't frugality for its own sake — it's a check that a small, deeply-adapted model can beat a bigger model you only prompted, without needing a training budget to prove it.
