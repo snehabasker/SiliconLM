@@ -1,0 +1,11 @@
+{
+  "files_scanned": 80000,
+  "kept": 51480,
+  "dropped_oversize": 2806,
+  "dropped_duplicate": 25714,
+  "corpus_mb": 439.49,
+  "rows_taken": 80000,
+  "source": "huggingface.co/datasets/shailja/Verilog_GitHub (Verilog_bigquery_GitHub.csv)",
+  "corpus_bytes": 439485526,
+  "corpus_sha256": "52e551e2f2163605ef6f0ef556d3b803ca1ab207a87cba7419f09ec9e8b4ebfa"
+}
